@@ -59,7 +59,7 @@ def get_dynamodb_item (partition_key, sort_key):
         logger.error(f"get_dynamodb_item :: Error {e}")
         return None
         
-# lambda handler triggered with S3 e
+# lambda handler triggered with S3 event of CSV upload. The lambda reads from CSV and writes into DynamoDB table
 def lambda_handler(event, context): 
     logger.info(f"event = {json.dumps(event)}")
     event_source = get_event_source(event)
@@ -93,6 +93,8 @@ def lambda_handler(event, context):
                     "labor_cost" : each_order[8],
                     "parts_cost" : each_order[9]
                 })
+            # Read table to test successful dynamodb insert
+            print(get_dynamodb_item('A00100', ''))
         except Exception as e:
             logger.info(f"event = {event}")
             logger.error(f"lambda_handler :: Error{e}")
